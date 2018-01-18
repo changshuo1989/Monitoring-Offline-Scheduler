@@ -1,0 +1,12 @@
+services:
+  get_valid_rules:
+    endpoint: http://localhost:8090/monitoring-database-service/api/offline-scheduler/rules/active
+    http_method: GET
+
+  send_triggered_rules:
+    endpoint: http://localhost:8090/monitoring-database-service/api/offline-scheduler/rules/triggered
+    http_method: POST
+
+  send_to_be_executed_rules:
+    endpoint: http://localhost:8080/monitoring-execution-service/api/offline-scheduler/triggered
+    http_method: POST
