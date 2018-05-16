@@ -22,7 +22,8 @@ class Rule(object):
             if self.end_time != '':
                 time_end = datetime.datetime.strptime(self.end_time, DATETIME_FORMAT)
 
-            if ((time_start is None and time_end is None) or (time_start is None and date_time < time_end)
+            if ((time_start is None and time_end is None)
+                or (time_start is None and date_time < time_end)
                 or (time_end is None and date_time >= time_start) or (time_start <= date_time < time_end)):
                 for schedule in self.schedules:
                     if schedule.is_triggered(date_time, time_start, time_end):

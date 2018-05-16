@@ -31,16 +31,24 @@ class Schedule(object):
 
             last_triggered = change_datetime_to_floor_tens_minute(datetime.datetime.strptime(self.last_triggered, DATETIME_FORMAT))
 
-        # every X type
-        if self.type == 1:
-            updated_time = last_triggered + datetime.timedelta(minutes=self.repeat_every)
-            updated_time = change_datetime_to_floor_tens_minute(updated_time)
+        # every X type - you have to give a start time
+        if self.type == 'Everyx':
             if last_triggered is None and start_time is not None:
                 # find most reasonable first triggered time based on start_time
                 first_trigger_time = change_datetime_to_ceil_tens_minute(start_time)
-                if current_date_time == first_trigger_time:
-                    return True
+                print('first_trigger_time: ' + first_trigger_time.strftime('%Y-%m-%d %H:%M:%S'))
+
+                while current_date_time >= first_trigger_time:
+                   if current_date_time == first_trigger_time:
+                       return True
+                   else:
+                       first_trigger_time = first_trigger_time + datetime.timedelta(minutes=self.repeat_every)
+                       first_trigger_time = change_datetime_to_floor_tens_minute(first_trigger_time)
+
+
             elif last_triggered is not None:
+                updated_time = last_triggered + datetime.timedelta(minutes=self.repeat_every)
+                updated_time = change_datetime_to_floor_tens_minute(updated_time)
                 if current_date_time > updated_time:
                     while current_date_time >= updated_time:
                         if current_date_time == updated_time:
@@ -52,8 +60,9 @@ class Schedule(object):
                     return True
 
 
+
         # daily type
-        elif self.type == 2:
+        elif self.type == 'Daily':
             if last_triggered is None:
                 if current_date_time.hour == self.hour_of_day and current_date_time.minute == 0:
                     return True
@@ -65,7 +74,7 @@ class Schedule(object):
                         return True
 
                 elif (current_date_time.year == updated_time.year
-                    and current_date_time == updated_time.month
+                    and current_date_time.month == updated_time.month
                     and current_date_time.day == updated_time.day
                     and current_date_time.hour == self.hour_of_day
                     and current_date_time.minute == 0):
@@ -74,9 +83,8 @@ class Schedule(object):
 
 
 
-
         # weekly type
-        elif self.type == 3:
+        elif self.type == 'Weekly':
             if last_triggered is None:
                 if (current_date_time.weekday() == self.date
                     and current_date_time.hour == self.hour_of_day
@@ -102,7 +110,7 @@ class Schedule(object):
 
 
         # monthly type
-        elif self.type == 4:
+        elif self.type == 'Monthly':
             if last_triggered is None:
                 if (current_date_time.day == self.date
                     and current_date_time.hour == self.hour_of_day
@@ -125,19 +133,9 @@ class Schedule(object):
                     return True
 
 
-        else:
-            return False
+        return False
         #Test
             #return True
-
-
-
-
-
-
-
-
-
 
 
 

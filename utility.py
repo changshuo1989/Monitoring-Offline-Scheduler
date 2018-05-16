@@ -37,7 +37,7 @@ def change_datetime_to_floor_tens_minute(date_time):
     new_date_time_str = date_time.strftime(DATETIME_FORMAT)
     new_date_time = datetime.datetime.strptime(new_date_time_str, DATETIME_FORMAT)
     minute = new_date_time.minute // 10 * 10
-    return new_date_time.replace(minute=minute)
+    return new_date_time.replace(minute=minute).replace(second=0)
 
 
 def change_datetime_to_ceil_tens_minute(date_time):
@@ -45,7 +45,7 @@ def change_datetime_to_ceil_tens_minute(date_time):
     new_date_time = datetime.datetime.strptime(new_date_time_str, DATETIME_FORMAT)
     if new_date_time.minute % 10 != 0:
         minute = new_date_time.minute // 10 * 10
-        new_date_time = new_date_time.replace(minute=minute)
+        new_date_time = new_date_time.replace(minute=minute).replace(second=0)
         new_date_time = new_date_time + datetime.timedelta(minutes=10)
     return new_date_time
 

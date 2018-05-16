@@ -5,11 +5,13 @@ from schedule import Schedule
 
 class Interface(object):
 
-    def __init__(self, get_rules_endpoint, get_rules_method, send_rules_endpoint, send_rules_method):
+    def __init__(self, get_rules_endpoint, get_rules_method, send_rules_endpoint, send_rules_method, send_executable_rules_endpoint, send_executable_rules_method):
         self.get_rules_endpoint = get_rules_endpoint
         self.get_rules_method = get_rules_method
         self.send_rules_endpoint = send_rules_endpoint
         self.send_rules_method = send_rules_method
+        self.send_executable_rules_endpoint = send_executable_rules_endpoint
+        self.send_executable_rules_method = send_executable_rules_method
 
     def get_valid_rules(self):
         if self.get_rules_method.lower() == 'get':
@@ -33,25 +35,35 @@ class Interface(object):
             return None
 
     def send_triggered_rules(self, triggered_rules_schedules):
+        headers = {'content-type': 'application/json'}
+        json_data = json.dumps(triggered_rules_schedules)
         if self.send_rules_method.lower() == 'post':
-            json_data = json.dumps(triggered_rules_schedules)
-            headers = {'content-type': 'application/json'}
-            res = requests.post(self.send_rules_endpoint, data=json_data, headers=headers)
-            if res.status_code != 200:
+            #print(json_data)
+            data_service_res = requests.post(self.send_rules_endpoint, data=json_data, headers=headers)
+            if data_service_res.status_code != 200:
                 raise ValueError('sending triggered rules and schedules failed!')
                 return False
             else:
                 #send to execution service
+                execution_service_res = requests.post(self.send_executable_rules_endpoint, data=json_data,headers=headers)
+                if execution_service_res != 200:
+                    raise ValueError('sending executable rules and schedules failed!')
+                    return False
+
                 return True
 
     def dictionary_to_schedule(self, dictionary):
         schedule_id = dictionary.get('id')
+        #print(schedule_id)
         schedule_type = dictionary.get('type')
+        #print(schedule_type)
         schedule_date = dictionary.get('date')
+        #print(schedule_date)
         schedule_hour_of_day = dictionary.get('hour_of_day')
         schedule_repeat_every = dictionary.get('repeat_every')
         schedule_last_updated = dictionary.get('last_updated')
         schedule_last_triggered = dictionary.get('last_triggered')
+
 
         return Schedule(schedule_id, schedule_type, schedule_date, schedule_hour_of_day, schedule_repeat_every,
                         schedule_last_updated, schedule_last_triggered)
@@ -61,7 +73,9 @@ class Interface(object):
         rule_id = dictionary.get('id')
         rule_status = dictionary.get('status')
         rule_start_time = dictionary.get('start_time')
+        #print(rule_start_time)
         rule_end_time = dictionary.get('end_time')
+        #print(rule_end_time)
         rule_last_updated = dictionary.get('last_updated')
         rule_last_triggered = dictionary.get('last_triggered')
         rule_last_executed = dictionary.get('last_executed')
@@ -70,7 +84,6 @@ class Interface(object):
         for schedule_dictionary in rule_schedules_list:
             schedule = self.dictionary_to_schedule(schedule_dictionary)
             rule_schedules.append(schedule)
-
         return Rule(rule_id, rule_schedules, rule_status, rule_start_time, rule_end_time, rule_last_updated,
                     rule_last_triggered, rule_last_executed)
 
