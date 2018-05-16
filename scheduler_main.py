@@ -12,9 +12,9 @@ if __name__ == '__main__':
         while True:
             try:
                 # sleep
-                #time.sleep(calculate_sleep_time())
+                time.sleep(calculate_sleep_time())
                 #test
-                time.sleep(6)
+                #time.sleep(6)
                 #get current datetime
                 now = datetime.datetime.now()
                 # log this check

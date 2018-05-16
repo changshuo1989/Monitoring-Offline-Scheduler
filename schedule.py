@@ -84,6 +84,7 @@ class Schedule(object):
 
 
         # weekly type
+        #0 - Monday ~ 6-sunday
         elif self.type == 'Weekly':
             if last_triggered is None:
                 if (current_date_time.weekday() == self.date
