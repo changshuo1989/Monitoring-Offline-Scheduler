@@ -8,5 +8,5 @@ services:
     http_method: POST
 
   send_to_be_executed_rules:
-    endpoint: http://monitor-execution-service:8080/monitoring-execution-service/api/offline-scheduler/triggered
+    endpoint: http://monitor-execution-service:8080/api/offline-scheduler/triggered
     http_method: POST
