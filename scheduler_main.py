@@ -42,7 +42,7 @@ if __name__ == '__main__':
                     if len(triggered_schedules) > 0:
                         triggered_rules_schedules[rule.id] = triggered_schedules
                         logger.info("triggered rule:" + str(rule.id))
-                        logger("triggered schedules:" + str(triggered_schedules))
+                        logger.info("triggered schedules:" + str(triggered_schedules))
 
                 if triggered_rules_schedules:
                     interface.send_triggered_rules(triggered_rules_schedules)
