@@ -41,8 +41,8 @@ if __name__ == '__main__':
                     triggered_schedules = rule.get_triggered_schedules(now)
                     if len(triggered_schedules) > 0:
                         triggered_rules_schedules[rule.id] = triggered_schedules
-                        print("triggered rule:" + str(rule.id))
-                        print("triggered schedules:" + str(triggered_schedules))
+                        logger.info("triggered rule:" + str(rule.id))
+                        logger("triggered schedules:" + str(triggered_schedules))
 
                 if triggered_rules_schedules:
                     interface.send_triggered_rules(triggered_rules_schedules)
