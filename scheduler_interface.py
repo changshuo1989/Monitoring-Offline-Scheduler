@@ -46,7 +46,8 @@ class Interface(object):
             else:
                 #send to execution service
                 execution_service_res = requests.post(self.send_executable_rules_endpoint, data=json_data,headers=headers)
-                if execution_service_res != 200:
+
+                if execution_service_res.status_code != 200:
                     raise ValueError('sending executable rules and schedules failed!')
                     return False
 

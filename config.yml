@@ -1,12 +1,15 @@
 services:
   get_valid_rules:
     endpoint: http://monitor-database-service:8090/monitoring-database-service/api/offline-scheduler/rules/active
+    #endpoint: http://10.0.1.253:5051/monitoring-database-service/api/offline-scheduler/rules/active
     http_method: GET
 
   send_triggered_rules:
     endpoint: http://monitor-database-service:8090/monitoring-database-service/api/offline-scheduler/rules/triggered
+    #endpoint: http://10.0.1.253:5051/monitoring-database-service/api/offline-scheduler/rules/triggered
     http_method: POST
 
   send_to_be_executed_rules:
     endpoint: http://monitor-execution-service:8080/api/offline-scheduler/triggered
+    #endpoint: http://10.0.1.253:7071/api/offline-scheduler/triggered
     http_method: POST
