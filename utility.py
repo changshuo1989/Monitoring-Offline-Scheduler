@@ -29,7 +29,7 @@ def calculate_sleep_time():
     pre_min = now.minute // 10 * 10
     pre_time = datetime.datetime(now.year, now.month, now.day, now.hour, pre_min)
     aim_time = pre_time+datetime.timedelta(minutes=10)
-    delta = aim_time
+    delta = aim_time - now
     return delta.total_seconds()
 
 
@@ -55,6 +55,8 @@ def get_same_day_next_x_months(current_date_time, number_of_months):
     current_month = current_date_time.month
     years_added = (current_month+number_of_months)//12
     new_month = (current_month+number_of_months)%12
+    if new_month == 0:
+        new_month = 12
     return current_date_time.replace(year=current_date_time.year+years_added, month=new_month)
 
 
